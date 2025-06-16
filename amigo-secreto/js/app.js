@@ -1,21 +1,32 @@
 let amigos = [];
 
-function adicionar(){
+
+function adicionar() {
     let amigo = document.getElementById('nome-amigo');
     let lista = document.getElementById('lista-amigos');
-    amigos.push (amigo.value);
 
-    if(lista.textContent == ''){
+
+    amigos.push(amigo.value);
+
+
+    if (lista.textContent == '') {
         lista.textContent = amigo.value;
-    }else{
+    } else {
         lista.textContent = lista.textContent + ', ' + amigo.value;
     }
+
+
     amigo.value = '';
 
+
+    atualizarLista();
+    atualizarSorteio();
 }
+
 
 function sortear() {
     embaralhar(amigos);
+
 
     let sorteio = document.getElementById('lista-sorteio');
     for (let i = 0; i < amigos.length; i++) {
@@ -26,7 +37,15 @@ function sortear() {
         }
     }
 }
-    
+
+
+function excluirAmigo(index) {
+    amigos.splice(index, 1);
+    atualizarLista();
+    atualizarSorteio();
+}
+
+
 function embaralhar(lista) {
     for (let indice = lista.length; indice; indice--) {
         const indiceAleatorio = Math.floor(Math.random() * indice);
@@ -35,9 +54,36 @@ function embaralhar(lista) {
 }
 
 
-function reiniciar(){
+function atualizarSorteio() {
+    let sorteio = document.getElementById('lista-sorteio');
+    sorteio.innerHTML = '';
+}
+
+
+function atualizarLista() {
+    let lista = document.getElementById('lista-amigos');
+    lista.innerHTML = '';
+
+
+    for (let i = 0; i < amigos.length; i++) {
+        // Cria um elemento de parágrafo para cada amigo
+        let paragrafo = document.createElement('p');
+        paragrafo.textContent = amigos[i];
+       
+        // Adiciona um evento de clique para excluir o amigo
+        paragrafo.addEventListener('click', function() {
+            excluirAmigo(i);
+        });
+
+
+        // Adiciona o parágrafo à lista
+        lista.appendChild(paragrafo);
+    }
+}
+
+
+function reiniciar() {
     amigos = [];
     document.getElementById('lista-amigos').innerHTML = '';
-    document.getElementById('lista-sortei').innerHTML = '';
-
+    document.getElementById('lista-sorteio').innerHTML = '';
 }
